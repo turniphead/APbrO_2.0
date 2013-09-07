@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 //import com.google.gdata.client.*;
@@ -26,7 +28,7 @@ import android.widget.TextView;
 //import com.google.gdata.data.calendar.*;
 //import com.google.gdata.data.extensions.*;
 //import com.google.gdata.util.*;
-//import java.net.URL;
+import java.net.URL;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -166,25 +168,50 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
+
             int section = getArguments().getInt(ARG_SECTION_NUMBER);
+
             switch (section){
                 case 1:
+                    View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
+                    TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
                     dummyTextView.setText("stats go here");
-                    break;
-                case 2:
-                    dummyTextView.setText("calendar goes here");
-                    break;
-                case 3:
-                    dummyTextView.setText("facebook group goes here");
-                    break;
-            }
+                    return rootView;
 
-            return rootView;
+                case 2:
+//                    View calView = inflater.inflate(R.layout.fragment_calendar, container, false);
+//                    WebView cal = (WebView) calView.findViewById(R.id.section_label);
+//                    cal.setWebViewClient(new WebViewClient() {
+//                        @Override
+//                        public boolean shouldOverrideUrlLoading(WebView view, String url){
+//                            view.loadUrl(url);
+//
+//                            return true;
+//                        }
+//                    });
+//
+//                    cal.loadUrl("https://www.google.com/calendar/embed?src=apoexec.president%40gmail.com&ctz=America/New_York");
+//                    cal.loadUrl("www.google.com");
+//                    return calView;
+
+                    View rootView2= inflater.inflate(R.layout.fragment_main_dummy, container, false);
+                    TextView dummyTextView2 = (TextView) rootView2.findViewById(R.id.section_label);
+                    dummyTextView2.setText("cal go here");
+                    return rootView2;
+
+
+
+                case 3:
+                    View rootView3 = inflater.inflate(R.layout.fragment_main_dummy, container, false);
+                    TextView dummyTextView3 = (TextView) rootView3.findViewById(R.id.section_label);
+
+                    dummyTextView3.setText("facebook group goes here");
+                    return rootView3;
+            }
+            View rootView4= inflater.inflate(R.layout.fragment_main_dummy, container, false);
+            return rootView4;
         }
     }
 
