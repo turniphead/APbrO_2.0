@@ -217,12 +217,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             	httpClient.execute(new HttpGet(getString(R.string.main_database_URL)));
             BufferedHttpEntity buf = new BufferedHttpEntity(response.getEntity());
             // Create reader for HTML data
-            InputStreamReader inputStreamReader = new InputStreamReader(buf.getContent())
+            InputStreamReader inputStreamReader = new InputStreamReader(buf.getContent());
             BufferedReader reader = new BufferedReader(inputStreamReader);
             // Create writer for file output
             FileOutputStream fileOutputStream =
             		openFileOutput(getString(R.string.temp_database_filename), MODE_PRIVATE);
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fOut));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
             
             // Read HTML post and write to file.
             String line;
