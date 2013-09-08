@@ -6,11 +6,9 @@
 
 
     <WebView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/my_webview"
-        android:layout_weight=".8"
-        android:layout_margin="16dip"/>
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 
 </LinearLayout>

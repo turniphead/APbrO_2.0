@@ -1,5 +1,13 @@
 package com.pennapps.apbro;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Locale;
 
 import android.app.ActionBar;
@@ -28,6 +36,12 @@ import android.widget.TextView;
 //import com.google.gdata.data.calendar.*;
 //import com.google.gdata.data.extensions.*;
 //import com.google.gdata.util.*;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.net.URL;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -181,25 +195,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     return rootView;
 
                 case 2:
-//                    View calView = inflater.inflate(R.layout.fragment_calendar, container, false);
-//                    WebView cal = (WebView) calView.findViewById(R.id.section_label);
-//                    cal.setWebViewClient(new WebViewClient() {
-//                        @Override
-//                        public boolean shouldOverrideUrlLoading(WebView view, String url){
-//                            view.loadUrl(url);
-//
-//                            return true;
-//                        }
-//                    });
-//
-//                    cal.loadUrl("https://www.google.com/calendar/embed?src=apoexec.president%40gmail.com&ctz=America/New_York");
-//                    cal.loadUrl("www.google.com");
-//                    return calView;
+                    View calView = inflater.inflate(R.layout.fragment_calendar, container, false);
+                    WebView cal = (WebView) calView.findViewById(R.id.my_webview);
 
-                    View rootView2= inflater.inflate(R.layout.fragment_main_dummy, container, false);
-                    TextView dummyTextView2 = (TextView) rootView2.findViewById(R.id.section_label);
-                    dummyTextView2.setText("cal go here");
-                    return rootView2;
+
+                    cal.loadUrl("https://dl.dropboxusercontent.com/u/59394702/APO%20html/PREZCAL.HTML");
+                    //cal.loadUrl("http://www.google.com");
+                    return calView;
+
+//                    View rootView2= inflater.inflate(R.layout.fragment_main_dummy, container, false);
+//                    TextView dummyTextView2 = (TextView) rootView2.findViewById(R.id.section_label);
+//                    dummyTextView2.setText("cal go here");
+//                    return rootView2;
 
 
 
@@ -213,6 +220,49 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             View rootView4= inflater.inflate(R.layout.fragment_main_dummy, container, false);
             return rootView4;
         }
+    }
+
+    public File downloadData(){
+
+        try {
+            // catches IOException below
+
+
+            /* We have to use the openFileOutput()-method
+            * the ActivityContext provides, to
+            * protect your file from others and
+            * This is done for security-reasons.
+            * We chose MODE_WORLD_READABLE, because
+            *  we have nothing to hide in our file */
+            FileOutputStream fOut = openFileOutput("wholeTable.txt", MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HttpGet httppost = new HttpGet("@main_database_URL");
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity ht = response.getEntity();
+            BufferedHttpEntity buf = new BufferedHttpEntity(ht);
+            BufferedReader r = new BufferedReader(new InputStreamReader(buf.getContent()));
+            BufferedWriter w = new BufferedWriter(osw);
+            String line;
+            while ((line = r.readLine()) != null) {
+                w.write(line + "\n");
+            }
+
+            /* ensure that everything is
+            * really written out and close */
+            osw.flush();
+            osw.close();
+            fOut.close();
+
+            File f = new File("wholeTable.txt");
+
+
+            return f;
+        }
+        catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+        return null;
     }
 
 }
