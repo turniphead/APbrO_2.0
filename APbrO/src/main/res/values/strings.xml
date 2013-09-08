@@ -9,5 +9,7 @@
     <string name="main_database_URL">https://docs.google.com/spreadsheet/fm?id=tTPkcx92OAxfJZOJDleW2SQ.13704020832602773887.2426811200662400849&amp;fmcmd=23&amp;gid=3</string>
     <string name="temp_database_filename">wholeTable.tsv</string>
     <string-array name="user_apo_stats"></string-array>
+    <color name="fbBlue">#3B5998</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>
