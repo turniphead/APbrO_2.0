@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.LogPrinter;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -100,6 +101,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        File f = downloadData();
     }
 
     @Override
@@ -237,7 +240,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             FileOutputStream fOut = openFileOutput("wholeTable.txt", MODE_PRIVATE);
             OutputStreamWriter osw = new OutputStreamWriter(fOut);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpGet httppost = new HttpGet("@main_database_URL");
+            HttpGet httppost = new HttpGet(getString(R.string.main_database_URL));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity ht = response.getEntity();
             BufferedHttpEntity buf = new BufferedHttpEntity(ht);
