@@ -1,5 +1,3 @@
-package com.pennapps.apbro;
-
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +13,6 @@ public class StatParser {
 	private String[] userData;
 	
 	/// Methods
-	
 	/**
 	 * Constructor for StatParser object, called in MainActivity
 	 * @param userFirstName
