@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">APbrO</string>
@@ -6,5 +5,7 @@
     <string name="title_section1">My Stats</string>
     <string name="title_section2">Calendar</string>
     <string name="title_section3">Facebook Group</string>
+    <string name="main_database_URL"/>https://docs.google.com/spreadsheet/fm?id=tTPkcx92OAxfJZOJDleW2SQ.13704020832602773887.2426811200662400849&fmcmd=23&gid=3</string>
+    <string-array name="user_apo_stats"></string-array>
 
 </resources>
