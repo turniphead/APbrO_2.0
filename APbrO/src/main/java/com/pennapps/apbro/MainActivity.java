@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Locale;
 
+import android.R;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -30,13 +31,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-//import com.google.gdata.client.*;
-//import com.google.gdata.client.calendar.*;
-//import com.google.gdata.data.*;
-//import com.google.gdata.data.acl.*;
-//import com.google.gdata.data.calendar.*;
-//import com.google.gdata.data.extensions.*;
-//import com.google.gdata.util.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -101,7 +95,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-
+        // TODO: fix this:
         File f = downloadData();
     }
 
@@ -165,8 +159,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                default:
+                	return null;
             }
-            return null;
         }
     }
 
@@ -186,86 +181,67 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
             int section = getArguments().getInt(ARG_SECTION_NUMBER);
 
             switch (section){
                 case 1:
                     View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
                     TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
+                    // TODO: implement
                     dummyTextView.setText("stats go here");
                     return rootView;
 
                 case 2:
                     View calView = inflater.inflate(R.layout.fragment_calendar, container, false);
                     WebView cal = (WebView) calView.findViewById(R.id.my_webview);
-
-
                     cal.loadUrl("https://dl.dropboxusercontent.com/u/59394702/APO%20html/PREZCAL.HTML");
-                    //cal.loadUrl("http://www.google.com");
                     return calView;
-
-//                    View rootView2= inflater.inflate(R.layout.fragment_main_dummy, container, false);
-//                    TextView dummyTextView2 = (TextView) rootView2.findViewById(R.id.section_label);
-//                    dummyTextView2.setText("cal go here");
-//                    return rootView2;
-
-
 
                 case 3:
                     View rootView3 = inflater.inflate(R.layout.fragment_main_dummy, container, false);
                     TextView dummyTextView3 = (TextView) rootView3.findViewById(R.id.section_label);
-
+                    // TODO: implement
                     dummyTextView3.setText("facebook group goes here");
                     return rootView3;
+                default:
+                	return inflater.inflate(R.layout.fragment_main_dummy, container, false);
             }
-            View rootView4= inflater.inflate(R.layout.fragment_main_dummy, container, false);
-            return rootView4;
         }
     }
 
-    public File downloadData(){
-
+    public File downloadData() {
         try {
-            // catches IOException below
-
-
-            /* We have to use the openFileOutput()-method
-            * the ActivityContext provides, to
-            * protect your file from others and
-            * This is done for security-reasons.
-            * We chose MODE_WORLD_READABLE, because
-            *  we have nothing to hide in our file */
-            FileOutputStream fOut = openFileOutput("wholeTable.txt", MODE_PRIVATE);
-            OutputStreamWriter osw = new OutputStreamWriter(fOut);
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpGet httppost = new HttpGet(getString(R.string.main_database_URL));
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity ht = response.getEntity();
-            BufferedHttpEntity buf = new BufferedHttpEntity(ht);
-            BufferedReader r = new BufferedReader(new InputStreamReader(buf.getContent()));
-            BufferedWriter w = new BufferedWriter(osw);
+            // Retrieve data via HTML GET
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpResponse response =
+            	httpClient.execute(new HttpGet(getString(R.string.main_database_URL)));
+            BufferedHttpEntity buf = new BufferedHttpEntity(response.getEntity());
+            // Create reader for HTML data
+            InputStreamReader inputStreamReader = new InputStreamReader(buf.getContent())
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            // Create writer for file output
+            FileOutputStream fileOutputStream =
+            		openFileOutput(getString(R.string.temp_database_filename), MODE_PRIVATE);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fOut));
+            
+            // Read HTML post and write to file.
             String line;
-            while ((line = r.readLine()) != null) {
-                w.write(line + "\n");
+            while ((line = reader.readLine()) != null) {
+                writer.write(line + "\n");
             }
-
-            /* ensure that everything is
-            * really written out and close */
-            osw.flush();
-            osw.close();
-            fOut.close();
-
-            File f = new File("wholeTable.txt");
-
-
-            return f;
+            
+            // Close all buffers and streams.
+            reader.close();
+            inputStreamReader.close();
+            writer.close();
+            fileOutputStream.close();
+            
+            // We're done. Return the new file.
+            return new File(getString(R.string.temp_database_filename));
         }
         catch (IOException ioe){
             ioe.printStackTrace();
         }
         return null;
     }
-
 }

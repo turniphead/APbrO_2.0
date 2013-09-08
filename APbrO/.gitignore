@@ -1,1 +1,8 @@
 /build
+
+# Ignore Eclipse-specific files.
+src/main/.classpath
+src/main/.project
+src/main/.settings/
+src/main/bin/
+src/main/project.properties
